@@ -3,36 +3,41 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
+
 class Test_Login:
 
 
-    def test_url(self):
-        driver = webdriver.Chrome()
-        driver.get("https://automation.credence.in/")
+    def test_url(self, setup):
+        self.driver = setup
 
-        if driver.title == "CredKart":
+        self.driver.get("https://automation.credence.in/")
+        self.driver.maximize_window()
+
+        if self.driver.title == "CredKart":
+            self.driver.save_screenshot("C:\\Users\\nikhi\\PycharmProjects\\pytestProjectJun\\Screenshots\\Title.PNG")
             print("You are at credence")
             assert True
         else:
             print("failed to url")
             assert False
 
+    def test_Userlogin(self, setup):
 
-    def test_Userlogin(self):
+        self.driver = setup
 
-        driver = webdriver.Chrome()
-        driver.maximize_window()
+        self.driver.maximize_window()
 
-        driver.get("https://automation.credence.in/login")
+        self.driver.get("https://automation.credence.in/login")
 
-        driver.find_element(By.XPATH, "//input[@id='email']").send_keys("Rohit344@credence.in")
+        self.driver.find_element(By.XPATH, "//input[@id='email']").send_keys("Rohit344@credence.in")
 
-        driver.find_element(By.XPATH,"//input[@id='password']").send_keys("rohit@123")
+        self.driver.find_element(By.XPATH, "//input[@id='password']").send_keys("rohit@123")
 
-        driver.find_element(By.XPATH,"//button[@type='submit']").click()
+        self.driver.find_element(By.XPATH, "//button[@type='submit']").click()
 
         try:
-            driver.find_element(By.XPATH, "//h2[normalize-space()='CredKart']")
+            self.driver.find_element(By.XPATH, "//h2[normalize-space()='CredKart']")
+            self.driver.save_screenshot(".\\Screenshots\\test_Userlogin11.PNG")
 
             print("Login Pass")
             assert True
@@ -40,9 +45,7 @@ class Test_Login:
         except:
             print("Login fail")
             assert False
+        self.driver.quit()
 
-
-
-
-
+#pytest -v -s -n=2 --html=Report/myreport.html --alluredir="C:\Users\nikhi\PycharmProjects\pytestProjectJun\AllureReports" --browser chrome
 
